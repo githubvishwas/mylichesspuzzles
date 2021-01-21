@@ -77,7 +77,7 @@ Username
 		const username = document.getElementById("username").value
 		//document.location.href=`https://amgilp.herokuapp.com/?getpuzzles=${username}`
 		var m = document.getElementById("username");
-		var qlink = "https://amgilp.herokuapp.com/api/users/?usernames=" + m.value
+		var qlink = "https://cors-anywhere.herokuapp.com/https://amgilp.herokuapp.com/api/users/?usernames=" + m.value
 		console.log(qlink)
 		response = httpGet(qlink);
 		console.log(response)
