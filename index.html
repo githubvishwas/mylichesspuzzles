@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/public/styles/app.css">
+		
+		<title>amgilp - Are my games in lichess puzzles ?</title>    
+		
+	</head>
+	
+	<body>
+	
+		<div class="header">
+			Based on and using the collected data of wonderful project 
+			<a target="_blank" rel="noopener noreferrer" href="https://github.com/kraktus/AreMyGamesInLichessPuzzles">
+				github.com/kraktus/AreMyGamesInLichessPuzzles
+			</a> 
+			.
+		</div>
+
+		<hr>
+
+		<div class="article">
+
+<script>
+	
+	const found = null
+	
+</script>
+
+<span class="aremygames">
+	
+	Are my games in lichess puzzles ?
+	
+</span>
+
+<hr>
+
+Username 
+
+<input type="text" id="username" value=""></input>
+
+<button onclick="search();">
+	
+	Search
+	
+</button>
+
+<hr>
+
+
+
+<a href="/toplist">
+	
+	View toplist
+	
+</a>
+
+<script>
+	function httpGet(theUrl)
+	{
+		//$("body").css("cursor", "progress");
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+		xmlHttp.send( null );
+		//$("body").css("cursor", "default");
+		return xmlHttp.responseText;
+	}
+	function search(){
+		const username = document.getElementById("username").value
+		document.location.href=`https://amgilp.herokuapp.com//?getpuzzles=${username}`
+		response = httpGet("https://amgilp.herokuapp.com/api/users/?usernames=${username}");
+		console.log(response)
+	}
+
+	const usernameInput = document.getElementById("username")
+		usernameInput.addEventListener("keydown", ev => {
+		if(ev.keyCode == 13){
+			search()
+		}
+	})
+
+	setTimeout(_ => {
+		usernameInput.select()
+		usernameInput.focus()
+		
+		if(found){
+			for(let i = 0; i < found.puzzleIds.length; i++){
+				setTimeout(_ => {
+					const id = found.puzzleIds[i]
+					fetch(`/puzzle/?id=${id}`).then(response => response.json().then(blob => {						
+						const data = blob.data
+						const game = data.game						
+						const players = game.players						
+						const playersData = players.map(player => player.name).join(" - ")
+						const gde = document.querySelector("#gamedata" + id)												
+						if(gde) gde.innerHTML = `<a target="_blank" rel="noopener noreferrer" href="https://lichess.org/${game.id}">${playersData} ${game.clock}</a>`
+						const pgne = document.querySelector("#pgn" + id)						
+						if(pgne) pgne.innerHTML = game.pgn
+					}))					
+				}, i * 2000)
+			}
+		}
+	}, 100)
+</script>
+
+</div>
+
+		<hr>
+
+		<div class="api">
+			Please don't use the UI for bulk queries, consider using the API instead, see
+			<a target="_blank" rel="noopener noreferrer" href="https://github.com/hyperchessbot/amgilp#API">
+				API Documentation
+			</a>
+			.
+		</div>
+
+		<hr>
+
+		<div class="footer">
+			
+			<div class="bottomlink">
+	
+	Discussion / Feedback
+	
+	<a target="_blank" rel="noopener noreferrer" href="https://discord.gg/8m3Muay">
+		
+		Hyperbot Discord
+		
+	</a>
+	
+</div>
+			
+			<div class="bottomlink">
+	
+	Source
+	
+	<a target="_blank" rel="noopener noreferrer" href="https://github.com/hyperchessbot/amgilp">
+		
+		github.com/hyperchessbot/amgilp
+		
+	</a>
+	
+</div>
+
+		</div>
+
+	</body>
+
+</html>
