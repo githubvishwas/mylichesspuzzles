@@ -73,7 +73,7 @@ Username
 	}
 	function search(){
 		const username = document.getElementById("username").value
-		document.location.href=`https://amgilp.herokuapp.com/?getpuzzles=${username}`
+		//document.location.href=`https://amgilp.herokuapp.com/?getpuzzles=${username}`
 		response = httpGet("https://amgilp.herokuapp.com/api/users/?usernames=${username}");
 		console.log(response)
 	}
